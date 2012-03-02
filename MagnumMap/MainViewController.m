@@ -136,7 +136,8 @@
 
              // 002260064320
              // 002260064910
-             NSString* url = [NSString stringWithFormat:@"http://www.itemlocator.net/scripts/cgiip.exe/WService=ils3/webspeed/locatorweb.w?radius=10&count=99&customer=churchweb&zip=%@&item=002260064910", user.postalCode];
+             NSString* url = [NSString stringWithFormat:@"http://www.itemlocator.net/scripts/cgiip.exe/WService=ils3/webspeed/locatorweb.w?radius=20&count=99&customer=churchweb&zip=%@&item=002260092674", user.postalCode];
+             //NSLog(@"URL: %@", url);
              NSString* userAgent = @"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_6; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.114 Safari/534.16";
              
              // send the request
@@ -303,12 +304,14 @@
 
 
 // ----------------------------------------------------------
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-{    
-	NSString* urlstr = [NSString stringWithFormat:@"http://maps.google.com/maps?q=%@", 
-                        [view.annotation.subtitle stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	NSLog(@"Opening %@", urlstr);
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlstr]];
+- (void)mapView:(MKMapView *)theMapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{   
+    NSString *googleMapsURLString = [NSString stringWithFormat:@"http://maps.google.com/?saddr=%1.6f,%1.6f&daddr=%@",
+                                     theMapView.userLocation.coordinate.latitude, theMapView.userLocation.coordinate.longitude, 
+                                    [view.annotation.subtitle stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+	NSLog(@"Opening %@", googleMapsURLString);
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:googleMapsURLString]];
 
 }
 
